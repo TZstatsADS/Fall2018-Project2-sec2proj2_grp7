@@ -20,7 +20,7 @@ The **learning goals** for this project is:
 ## Project Title Lorem ipsum dolor sit amet
 Term: Spring 2018
 
-+ Team #
++ Team #7
 + **Projec title**: + Team members
 	+ team member 1
 	+ team member 2
