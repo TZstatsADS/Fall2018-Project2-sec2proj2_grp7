@@ -22,11 +22,11 @@ Term: Spring 2018
 
 + Team #7
 + **Projec title**: + Team members
-	1 Feng, Xinwei xf2168@columbia.edu
-	2 Wang, Lujia lw2772@columbia.edu
-	3 Wang, Binhan bw2544@columbia.edu
-	4 Zhang, Rui rz2406@columbia.edu
-	5 Zhang, Yixin yz3223@columbia.edu
+	+1 Feng, Xinwei xf2168@columbia.edu
+	+2 Wang, Lujia lw2772@columbia.edu
+	+3 Wang, Binhan bw2544@columbia.edu
+	+4 Zhang, Rui rz2406@columbia.edu
+	+5 Zhang, Yixin yz3223@columbia.edu
 
 + **Project summary**: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
