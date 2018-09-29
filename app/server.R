@@ -13,7 +13,7 @@ man.nbhd=c("all neighborhoods", "Central Harlem",
            "Gramercy Park and Murray Hill",
            "Greenwich Village and Soho", 
            "Lower Manhattan",
-           "Lower East Side", 
+           "Lower East Sde", 
            "Upper East Side", 
            "Upper West Side",
            "Inwood and Washington Heights")
