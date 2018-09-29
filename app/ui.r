@@ -1,42 +1,64 @@
 library(shiny)
 library(leaflet)
-
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("2009 Manhattan Housing Sales"),
-  
-  # Sidebar with a selector input for neighborhood
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("nbhd", label = h5("Choose a Manhattan Neighborhood"), 
-                         choices = list("all neighborhoods"=0,
-                                        "Central Harlem"=1, 
-                                        "Chelsea and Clinton"=2,
-                                        "East Harlem"=3, 
-                                        "Gramercy Park and Murray Hill"=4,
-                                        "Greenwich Village and Soho"=5, 
-                                        "Lower Manhattan"=6,
-                                        "Lower East Side"=7, 
-                                        "Upper East Side"=8, 
-                                        "Upper West Side"=9,
-                                        "Inwood and Washington Heights"=10), 
-                         selected = 0)
-      #sliderInput("p.range", label=h3("Price Range (in thousands of dollars)"),
-      #            min = 0, max = 20000, value = c(200, 10000))
+library(shinydashboard)
+header <- dashboardHeader(
+  title = "Twin Cities Buses"
+)
+body <- dashboardBody(
+  fluidRow(
+    column(width = 9,
+           box(width = NULL, solidHeader = TRUE,
+               leafletOutput("busmap", height = 500)
+           ),
+           box(width = NULL,
+               uiOutput("numVehiclesTable")
+           )
     ),
-    # Show two panels
-    mainPanel(
-      #h4(textOutput("text")),
-      h3(code(textOutput("text1"))),
-      tabsetPanel(
-        # Panel 1 has three summary plots of sales. 
-        tabPanel("Sales summary", plotOutput("distPlot")), 
-        # Panel 2 has a map display of sales' distribution
-        tabPanel("Sales map", plotOutput("distPlot1"))),
-      leafletOutput("map", width = "80%", height = "400px")
+    column(width = 3,
+           box(width = NULL, status = "warning",
+               uiOutput("routeSelect"),
+               checkboxGroupInput("directions", "Show",
+                                  choices = c(
+                                    Northbound = 4,
+                                    Southbound = 1,
+                                    Eastbound = 2,
+                                    Westbound = 3
+                                  ),
+                                  selected = c(1, 2, 3, 4)
+               ),
+               p(
+                 class = "text-muted",
+                 paste("Note: a route number can have several different trips, each",
+                       "with a different path. Only the most commonly-used path will",
+                       "be displayed on the map."
+                 )
+               ),
+               actionButton("zoomButton", "Zoom to fit buses")
+           ),
+           box(width = NULL, status = "warning",
+               selectInput("interval", "Sort",
+                           choices = c(
+                             "State" = 30,
+                             "DRG" = 60,
+                             "Cost" = 120,
+                             "Quality Score" = 300,
+                             "Preference" = 600
+                           ),
+                           selected = "60"
+               ),
+               uiOutput("timeSinceLastUpdate"),
+               actionButton("refresh", "Refresh now"),
+               p(class = "text-muted",
+                 br(),
+                 "Source data updates every 30 seconds."
+               )
+           )
     )
- )
-))
+  )
+)
 
+dashboardPage(
+  header,
+  dashboardSidebar(disable = TRUE),
+  body
+)
