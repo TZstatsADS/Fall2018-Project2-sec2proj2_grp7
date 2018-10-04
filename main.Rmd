@@ -11,6 +11,80 @@ knitr::opts_chunk$set(echo = TRUE)
 library(shiny)
 runApp("app")
 ```
+```{r}
+Sys.setenv("plotly_username"="kathleennn")
+Sys.setenv("plotly_api_key"="P0wR1uMnk5rRdKCsuUMT")
+```
+
+```{r}
+library(plotly)
+df <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2011_us_ag_exports.csv")
+df$hover <- with(df, paste(state, '<br>', "Beef", beef, "Dairy", dairy, "<br>",
+                           "Fruits", total.fruits, "Veggies", total.veggies,
+                           "<br>", "Wheat", wheat, "Corn", corn))
+# give state boundaries a white border
+l <- list(color = toRGB("white"), width = 2)
+# specify some map projection/options
+g <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+
+p <- plot_geo(df, locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~total.exports, text = ~hover, locations = ~code,
+    color = ~total.exports, colors = 'Purples'
+  ) %>%
+  colorbar(title = "Millions USD") %>%
+  layout(
+    title = '2011 US Agriculture Exports by State<br>(Hover for breakdown)',
+    geo = g
+  )
+
+# Create a shareable link to your chart
+# Set up API credentials: https://plot.ly/r/getting-started
+chart_link = api_create(p, filename="choropleth-ag")
+chart_link
+```
+
+
+```{r}
+library(plotly)
+library(tidyr)
+
+#df <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2011_us_ag_exports.csv")
+df <- read.csv("out.csv")
+df %>% drop_na()
+df$hover <- with(df, paste(State, '<br>', "Number of Hospitals", Provider.ID,"<br>", "Average Total Payments",   Average.Total.Payments, "<br>", "Average Covered Charges", Average.Covered.Charges,"<br>", "Total Discharges", Total.Discharges))
+# give state boundaries a white border
+l <- list(color = toRGB("white"), width = 2)
+# specify some map projection/options
+g <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+
+p <- plot_geo(df, locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~Total.Discharges, text = ~hover, locations = ~State,
+    color = ~Total.Discharges, colors = 'Purples'
+  ) %>%
+  colorbar(title = "Millions USD") %>%
+  layout(
+    title = '2011 US Hospital Summary<br>',
+    geo = g
+  )
+
+
+# Create a shareable link to your chart
+# Set up API credentials: https://plot.ly/r/getting-started
+chart_link = api_create(p, filename="choroleth-ag")
+chart_link
+```
 
 ## R Markdown
 
