@@ -1,7 +1,8 @@
 library(shinydashboard)
 library(googleway)
 library(shiny)
-
+library(dplyr)
+lib
 # A function to calculate score
 getscore <- function(observation, care.w) {
   if (length(ordinal) != 7 | length(care.w) != 7) {return(NA)}
@@ -15,8 +16,9 @@ getscore <- function(observation, care.w) {
   return(sum(ordinal * f.w))
 }
 
-
-
+hospital_info <- read.csv("../data/hospital_info.csv")
+DRG <- as.vector(unique(hospital_info$DRG.Definition))
+hospital_names <- as.vector(unique(hospital_info$Hospital.Name))
 
 
 ui <- dashboardPage(
@@ -66,7 +68,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(width=12,
                     selectizeInput("select_hospital", label = "Select hospital:",
-                                   choice = c("hospital1","hospital2"), selected = "hospital1", 
+                                   choice = hospital_names, selected = c("MOUNT SINAI HOSPITAL","NEW YORK-PRESBYTERIAN HOSPITAL"), 
                                    multiple = TRUE))
               )),
       #Recommendation tab - map + recommendation filter + table + infobox
@@ -78,10 +80,7 @@ ui <- dashboardPage(
                            collapsible=TRUE,
                            width=NULL,
                            selectizeInput("r.state", label = "Select State:", 
-                                          choice = c("AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN",
-                                                     "IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV",
-                                                     "NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN",
-                                                     "TX","UT","VT","VA","WA","WV","WI","WY"), selected = "NY"),
+                                          choice = state.abb, selected = "NY"),
                            sliderInput("r.cost",label= "Cost Range:",min=2000, max=20000,value=c(3000,15000)),
                            selectizeInput("r.care",label="Most Cared Hospital Quality:", 
                                               choices=c("Selected","Mortality","Safety of Care","Readmission Rate","Patient Experience",
@@ -98,7 +97,7 @@ ui <- dashboardPage(
                 column(width=8,
                        box(title="Navigation",
                            width=NULL,
-                           google_mapOutput(outputId="map",height="300px")),
+                           leafletOutput(outputId="map",height="300px")),
                        box(title = "Search Result",width = NULL,
                            dataTableOutput(outputId="r.df"))
                 ))
@@ -108,70 +107,18 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  # set_key("AIzaSyDdlgehS7a81ffnUqrpnHdJASMQPZsRdpU")
-  # 
-  # 
-  # long <- state.center$x[which("NY"==state.abb)]
-  # lat <- state.center$y[which("NY"==state.abb)]
-  # 
-  #   output$map <- renderGoogle_map({
-  #     google_map(search_box = TRUE,location = c(lat,long),
-  #                zoom = 7)
-  #   })
-  # # load data
-  # # Haven't been tested; could be replaced by read.csv()
-  # #load("./hospital\ info.csv")
-  # #hospital_info <- read.csv("../data/hospital_info.csv")
-  # # Input
-  # r.state <- reactive(input$r.state)
-  # r.drg <- reactive(input$r.drg)
-  # r.care <- reactive(input$r.care)
-  # r.score <- reactive(input$r.score)
-  # #r.cost <- reactive(input$r.cost)
-  # 
-  # # Filter data by state and DRG
-  # f1 <- reactive({
-  #   if (r.state() == "Select") {f1 <- hospital_info}
-  #   else {hospital_info %>% filter(State == r.state())}
-  # })
-  # 
-  # f2 <- reactive({
-  #   if (r.drg() == "Select") {f2 <- f1}
-  #   else {f1 %>% filter(DRG.Definition == r.drg())}
-  # })
-  # 
-  # # filter by cost
-  # 
-  # # Define care weight by input
-  # o.c.w <- c(1, 1, 1, 1, 1, 1, 1)
-  # name <- c("Selected","Mortality","Safety of Care","Readmission Rate","Patient Experience",
-  #           "Effectiveness of Care","Timeliness of Care","Efficient Use of Medical Imaging")
-  # c.weight <- reactive({
-  #   if (r.care() == "Select") {o.c.w
-  #   } else {o.c.w[which(name == r.care())] <- 2; o.c.w}
-  # })
-  # 
-  # # Apply getscore function to every row of the selected data
-  # score.res <- reactive(apply(f2, 1, getscore, care.w = c.weight))
-  # 
-  # # Filter by min score
-  # score.res <- reactive(score.res)
-  # r.order <- reactive(order(score.res, decreasing = T))
-  # #f2$rank <- reactive(floor(frankv(score.res, order = -1, ties.method = "min")))
-  # f2$pay.with.medi <- f2$Average.Total.Payments - f2$Average.Medicare.Payments
-  # 
-  # # Data table output
-  # output$r.df <- renderDataTable({
-  #   final.d <- f2[
-  #     r.order, 
-  #     c("Hospital Name", "Address", "City", "State", "Zipcode",
-  #                            "Phone Number", "Average Total Payments", "pay.with.medi")]
-  #   final.d}, options = list(orderClasses = TRUE,
-  #                            iDisplayLength = 5, lengthMenu = c(5, 10, 15, 20)
-  #   ))
-  # 
-
-}
+  r.state <- reactive(input$r.state)
+  # Reactive expression for the map data subsetted to what the user selected
+  filteredData <- reactive({
+    hospital_address[hospital_address$State == input$r.state,]
+  })
+  #leaflet map output (interactive with user's input)
+  output$map <- renderLeaflet({
+    filteredData <- filteredData()
+    leaflet(filteredData) %>% addTiles() %>% addMarkers(lng = ~lon, lat = ~lat,popup=paste(filteredData$Hospital.Name))
+    }
+  )
+  }
 
 shinyApp(ui, server)
 
