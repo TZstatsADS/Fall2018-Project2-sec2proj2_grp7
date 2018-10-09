@@ -1,24 +1,21 @@
 library(shinydashboard)
-library(googleway)
+#library(googleway)
 library(shiny)
 library(dplyr)
-lib
-# A function to calculate score
-getscore <- function(observation, care.w) {
-  if (length(ordinal) != 7 | length(care.w) != 7) {return(NA)}
-  in.w <- c(20, 20, 20, 20, 8, 8, 4) # order is (M, S, R, P, Effect, T, Effic)
-  f.w <- in.w * care.w/sum(in.w * care.w)
-  ordinal <- observation[c("Mortality national comparison", "Safety of care.national comparison",
-                           "Readmission national comparison", "Patient experience national comparison",
-                           "Effectiveness of care national comparison",
-                           "Timeliness of care national comparison",
-                           "Efficient use of medical imaging national comparison")]
-  return(sum(ordinal * f.w))
-}
+library(leaflet)
+library(leaflet.extras)
+
+
 
 hospital_info <- read.csv("../data/hospital_info.csv")
+hospital_address <- read.csv("../data/hospital_address.csv")
 DRG <- as.vector(unique(hospital_info$DRG.Definition))
 hospital_names <- as.vector(unique(hospital_info$Hospital.Name))
+states <- as.vector(unique(hospital_info$State))
+
+
+
+
 
 
 ui <- dashboardPage(
@@ -80,7 +77,7 @@ ui <- dashboardPage(
                            collapsible=TRUE,
                            width=NULL,
                            selectizeInput("r.state", label = "Select State:", 
-                                          choice = state.abb, selected = "NY"),
+                                          choice = states, selected = "NY"),
                            sliderInput("r.cost",label= "Cost Range:",min=2000, max=20000,value=c(3000,15000)),
                            selectizeInput("r.care",label="Most Cared Hospital Quality:", 
                                               choices=c("Selected","Mortality","Safety of Care","Readmission Rate","Patient Experience",
@@ -112,12 +109,13 @@ server <- function(input, output) {
   filteredData <- reactive({
     hospital_address[hospital_address$State == input$r.state,]
   })
+  icon.flag <- makeAwesomeIcon(icon = "flag", markerColor = "red" ,iconColor = "white")
   #leaflet map output (interactive with user's input)
   output$map <- renderLeaflet({
     filteredData <- filteredData()
-    leaflet(filteredData) %>% addTiles() %>% addMarkers(lng = ~lon, lat = ~lat,popup=paste(filteredData$Hospital.Name))
-    }
-  )
+    leaflet(filteredData) %>% addTiles() %>% addAwesomeMarkers(lng = ~lon, lat = ~lat, clusterOptions=markerClusterOptions(),icon=icon.redcross,
+                                                               popup=paste(filteredData$Hospital.Name,"\nAddress:",filteredData$Full))
+    })
   }
 
 shinyApp(ui, server)
