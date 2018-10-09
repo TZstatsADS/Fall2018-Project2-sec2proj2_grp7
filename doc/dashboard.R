@@ -109,11 +109,18 @@ server <- function(input, output) {
   filteredData <- reactive({
     hospital_address[hospital_address$State == input$r.state,]
   })
-  icon.flag <- makeAwesomeIcon(icon = "flag", markerColor = "red" ,iconColor = "white")
+  # to keep track of previously selected row
+  # prev_row <- reactiveVal()
+  # # new icon style
+  # icon.flag <- makeAwesomeIcon(icon = "flag", markerColor = "red" ,iconColor = "white")
+  # # Observe event - select row in table
+  # observeEvent(input$r.table_rows_selected, {
+  #   row_selected = r.data()[input$]
+  # })
   #leaflet map output (interactive with user's input)
   output$map <- renderLeaflet({
     filteredData <- filteredData()
-    leaflet(filteredData) %>% addTiles() %>% addAwesomeMarkers(lng = ~lon, lat = ~lat, clusterOptions=markerClusterOptions(),icon=icon.redcross,
+    leaflet(filteredData) %>% addTiles() %>% addAwesomeMarkers(lng = ~lon, lat = ~lat, clusterOptions=markerClusterOptions(),
                                                                popup=paste(filteredData$Hospital.Name,"\nAddress:",filteredData$Full))
     })
   }
