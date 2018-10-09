@@ -3,9 +3,9 @@ library(dplyr)
 
 
 hospital_info <- read.csv("../data/hospital_info.csv")
-DRG <- as.vector(unique(hospital_info$DRG.Definition))
+
 hospital_address <- hospital_info %>% 
-  select(Hospital.Name, Hospital.Type,Phone.Number, Address, City, State, ZIP.Code) %>% 
+  select(Hospital.Name,Provider.Id, Address, City, State, ZIP.Code) %>% 
   distinct()
 
 hospital_address <- hospital_address %>% mutate(Full=paste(Address,City,State,sep=", "))

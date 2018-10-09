@@ -7,8 +7,8 @@ library(leaflet.extras)
 
 
 
-hospital_info <- read.csv("../data/hospital_info.csv")
-hospital_address <- read.csv("../data/hospital_address.csv")
+hospital_info <- read.csv("../data/hospital_full.csv")
+#hospital_address <- read.csv("../data/hospital_address.csv")
 DRG <- as.vector(unique(hospital_info$DRG.Definition))
 hospital_names <- as.vector(unique(hospital_info$Hospital.Name))
 states <- as.vector(unique(hospital_info$State))
