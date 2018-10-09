@@ -9,14 +9,14 @@ if (length(p.nti) > 0) {
 
 # A function to calculate score
 getscore <- function(observation, care.w) {
-  if (length(ordinal) != 7 | length(care.w) != 7) {return(NA)}
   in.w <- c(20, 20, 20, 20, 8, 8, 4) # order is (M, S, R, P, Effect, T, Effic)
   f.w <- in.w * care.w/sum(in.w * care.w)
-  ordinal <- observation[c("Mortality national comparison", "Safety of care.national comparison",
-                           "Readmission national comparison", "Patient experience national comparison",
-                           "Effectiveness of care national comparison",
-                           "Timeliness of care national comparison",
-                           "Efficient use of medical imaging national comparison")]
+  ordinal <- as.numeric(observation[c("Mortality.national.comparison", "Safety.of.care.national.comparison",
+                           "Readmission.national.comparison", "Patient.experience.national.comparison",
+                           "Effectiveness.of.care.national.comparison",
+                           "Timeliness.of.care.national.comparison",
+                           "Efficient.use.of.medical.imaging.national.comparison")])
+  if (length(ordinal) != 7 | length(care.w) != 7) {return(NA)}
   return(sum(ordinal * f.w))
 }
 
@@ -44,18 +44,19 @@ shinyServer(function(input, output){
     else {f1 %>% filter(substr(`DRG Definition`, 1, 3) == substr(r.drg(), 1, 3))}
   })
   
+  
   # filter by cost
   
   # Define care weight by input
   o.c.w <- c(1, 1, 1, 1, 1, 1, 1)
-  name <- c("Mortality national comparison", "Safety of care.national comparison",
-            "Readmission national comparison", "Patient experience national comparison",
-            "Effectiveness of care national comparison",
-            "Timeliness of care national comparison",
-            "Efficient use of medical imaging national comparison")
+  name <- c("Mortality", "Safety of care",
+            "Readmission", "Patient experience",
+            "Effectiveness",
+            "Timeliness of care",
+            "Efficient use of medical imaging")
   c.weight <- reactive({
     if (r.care() == "Select") {o.c.w
-      } else {o.c.w[which(o.c.w == r.care())] <- 2; o.c.w}
+      } else {o.c.w[which(name == r.care())] <- 2; o.c.w}
   })
   
   # Apply getscore function to every row of the selected data
