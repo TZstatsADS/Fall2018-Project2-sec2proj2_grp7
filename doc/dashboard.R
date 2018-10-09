@@ -105,24 +105,40 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   r.state <- reactive(input$r.state)
-  # Reactive expression for the map data subsetted to what the user selected
-  filteredData <- reactive({
-    hospital_address[hospital_address$State == input$r.state,]
-  })
-  # to keep track of previously selected row
-  # prev_row <- reactiveVal()
-  # # new icon style
-  # icon.flag <- makeAwesomeIcon(icon = "flag", markerColor = "red" ,iconColor = "white")
-  # # Observe event - select row in table
-  # observeEvent(input$r.table_rows_selected, {
-  #   row_selected = r.data()[input$]
+  # # Reactive expression for the map data subsetted to what the user selected
+  # filteredData <- reactive({
+  #   hospital_address[hospital_address$State == input$r.state,]
   # })
+  # to keep track of previously selected row
+  prev_row <- reactiveVal()
+  # new icon style
+  icon.flag <- makeAwesomeIcon(icon = "flag", markerColor = "red" ,iconColor = "white")
+  # Observe event - select row in table
+  observeEvent(input$r.df_rows_selected, {
+    row_selected = r.data()[input$r.df_rows_selected,]
+    proxy <- leafletProxy('map')
+    print(row_selected)
+    proxy %>% addAwesomeMarkers(lng=row_selected$long, lat=row_selected$lat,icon=icon.flag,layerId = as.character(row_selected$Provider.Id))
+    # Reset previously seleted marker
+    if(!is.null(prev_row())) {
+      proxy %>% addMarkers(lng=prev_row()$lon, lat=prev_row()$lat,layerId=as.character(prev_row()$Provider.Id))
+    }
+    # set new value to reactiveVal
+    prev_row(row_selected)
+  })
   #leaflet map output (interactive with user's input)
   output$map <- renderLeaflet({
-    filteredData <- filteredData()
-    leaflet(filteredData) %>% addTiles() %>% addAwesomeMarkers(lng = ~lon, lat = ~lat, clusterOptions=markerClusterOptions(),
-                                                               popup=paste(filteredData$Hospital.Name,"\nAddress:",filteredData$Full))
+    leaflet(data=df3()) %>% addTiles() %>% addAwesomeMarkers(lng = ~lon, lat = ~lat, clusterOptions=markerClusterOptions(),
+                                                               popup=paste(df3$Hospital.Name,"\nAddress:",df3$Full),
+                                                             layerId = as.character(df3()$Provider.Id))
     })
+  # observe Event - click on map
+  observeEvent(input$map_marker_click, {
+    clickId <- input$map_marker_click$id
+    dataTableProxy('r.df') %>% 
+      selectRows(which(df3()$id == clickId)) %>%
+      selectPage(which(input$r.df_rows_all == clickId) %/% input$r.df_state$length+1)
+  })
   }
 
 shinyApp(ui, server)
