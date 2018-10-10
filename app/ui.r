@@ -3,10 +3,11 @@ library(shinydashboard)
 shinyUI(dashboardPage(
   #header
   dashboardHeader(title = "HospitalCare"),
-  skin = "yellow",
+  skin = "blue",
   #sidebar - Introduction + Overview(Trend+Heatmap+Comparison) + Recommendation
   dashboardSidebar(
     sidebarMenu(id="menu",
+                menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
                 menuItem("About", tabName = "About", icon = icon("info"),
                          menuSubItem("User Manual", tabName = "UserManual",icon = icon("book")),
                          menuSubItem("About Team", tabName = "TeamInfo", icon = icon("users"))),
@@ -36,39 +37,47 @@ shinyUI(dashboardPage(
   #body
   dashboardBody(
     tabItems(
+      tabItem(tabName = "Welcome1",
+              mainPanel(
+                img(src = "logo.jpg",height=700,width=1350)
+              )),
       #Introduction tab - user manual
       tabItem(tabName = "UserManual",
               fluidRow(
-                tabBox(
-                  width = 12,
+                mainPanel(
+                  h3(textOutput("read0")),
+                  h3(textOutput("read1")),
+                  hr(),
+                  textOutput("read2"),
+                  textOutput("read3"),
+                  textOutput("read4"),
+                  textOutput("read5"),
+                  hr(),
+                  h3(textOutput("read6")),
+                  textOutput("read7"),
+                  textOutput("read8"),
+                  textOutput("read9"),
+                  textOutput("read10")
                   
-                  tabPanel(
-                    "About the Dataset",
-                    fluidRow(
-                      column(
-                        width = 8, 
-                        tags$h4("The Centers for Medicare and Medicaid (CMS) released Inpatient Charge Data from FY 2011, The Inpatient data describes the following
-                                data elements:"),
-                        tags$h3("-DRG:"),tags$h4("A Diagnosis Related Group is a statistical system of classifying inpatient stays into groups for the purposes of payment. The CMS data provides average payments for providers organized by individual DRGs."),
-                        tags$h3("-Provider:"),tags$h4("Individual providers are described by their id, name and address."),
-                        tags$h3("-Total Discharges:"),tags$h4("This is simply the count of the number of discharges for that DRG and Provider."),
-                        tags$h3("-Average Covered Charges:"),tags$h4("Hospital billing costs, which are used as negotiating points and not particularly meaningful in terms of the actual amounts paid by Medicare. These are the charges that would be billed to a patient without insurance."),
-                        tags$h3("-Average Medicare Payments:"),tags$h4("The average amount that Medicare pays to the provider for Medicare's share of the MS-DRG."),
-                        tags$h3("-Average Total Payments:"),tags$h4("Including the co-payments and deductibles that the patient is responsible for, as well as additional payments by third parties, in addition to Medicare payments."),
-                        tags$a(href = 'https://questions.cms.gov/faq.php?id=5005&rtopic=2038&rsubtopic=7950',
-                               "Learn more at CMS")),
-                      column(
-                        width = 4,align = "bottom right",
-                        tags$img(src = "bill.jpg", width = "300px", height = "300px"))))
-                  
-                  )
+                )
               ))
       ,
       #Introduction tab - about team
       tabItem(tabName = "TeamInfo",
-              fluidRow(box(
-                title = "Team Members", width = 12
-              ))),
+              fluidRow(
+                mainPanel(
+                  h3(textOutput("team0")),
+                  textOutput("team1"),
+                  textOutput("team2"),
+                  hr(),
+                  textOutput("team3"),
+                  textOutput("team4"),
+                  textOutput("team5"),
+                  textOutput("team6"),
+                  textOutput("team7"),
+                  textOutput("team8")
+              
+                ))),
       
       ## tab Inpatient- Overview ##      
       tabItem(tabName = "Overview",
