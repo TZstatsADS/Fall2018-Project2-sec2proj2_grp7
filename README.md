@@ -16,7 +16,7 @@ Term: Fall 2018
 
 + **Project summary**:Are you still feel difficult to make decision on which hospital is good to go? Do you still worry about the hospital billing varies widely but the pricing does not reflect quality of care? Now, finding a fitted hospital is a piece of cake. We provide an updated version 2.0 interactive hospital recommendation APP implemented in R using Shiny. This APP is intended to help patients to find hospitals where they will receive high-quality care with reasonable payment. It allows patients to compare cost and quality information at different hospitals based on their diagnosis related groups. Feeling good, right? Please don't wait, go find your best hospital by clicking here 
 
-
+[Project Website](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
 
 + **Contribution statement**:Xinwei, Lujia, Binhan, Rui, and Yixin participated in group discussions and designed the content of this App. Lujia developed baseline dashboard UI, the sub UI of hospital recommendation tab, and the server for interactive mapout. Rui cleaned, merged various raw data sets, and produced the final data frame to be used in both overview and recommendation. Binhan developed the model algorithm for calculating performance score and generated the data table output. Yixin developed an upgraded version of statistical overview of our database including state overview, spending trend and hospital comparison. Xinwei polished pages including user manual and credits, and she also helped other members resolve issues occured along the road. All team members approve our work presented in our GitHub repository including this contribution statement.
 
