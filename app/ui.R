@@ -122,27 +122,16 @@ ui <- dashboardPage(
                     )
                     #submitButton("Submit",width='100%')
                   ),
-                  valueBox(
-                    subtitle = "Average Quality",
-                    value = 70,
-                    color = "yellow",
-                    icon = icon("thumbs-up", lib = "glyphicon"),
-                    width = NULL
-                  ),
-                  valueBox(
-                    subtitle = "Total Number of Hospitals",
-                    value = 100,
-                    color = "purple",
-                    icon = icon("list"),
-                    width = NULL
-                  )
+                  valueBoxOutput("vbox_1",width = NULL),
+                  valueBoxOutput("vbox_2",width = NULL),
+                  valueBoxOutput("vbox_3",width = NULL)
                 ),
                 column(
                   width = 8,
                   box(
                     #title = "Navigation",
                     width = NULL,
-                    leafletOutput(outputId = "map", height = "300px")
+                    leafletOutput(outputId = "map")
                   ),
                   box(
                     title = "Search Result",

@@ -130,4 +130,35 @@ server <- function(input, output) {
       selectPage(which(input$r.df_rows_all == clickId) %/%
                    input$r.df_state$length + 1)
   })
+  
+  #value box - number of hospitals
+  output$vbox_1 <- renderValueBox({
+    valueBox(
+      subtitle = "Number of Hospitals",
+      value = nrow(df3()),
+      color = "purple",
+      icon = icon("list")
+    )
+  })
+  
+  #value box - average quality
+  output$vbox_2 <- renderValueBox({
+    valueBox(
+      subtitle = "Average Quality",
+      value = round(100*mean(score()[score()>0])/max(score()),0),
+      color = "yellow",
+      icon = icon("thumbs-up", lib = "glyphicon")
+    )
+  })
+  
+  #value box - average cost
+  output$vbox_3 <- renderValueBox({
+    valueBox(
+      subtitle = "Average Cost",
+      value = paste(round(mean(df3()$Average.Total.Payments,na.rm = TRUE),0),"$"),
+      color = "blue",
+      icon = icon("credit-card")
+    )
+  })
+  
 }

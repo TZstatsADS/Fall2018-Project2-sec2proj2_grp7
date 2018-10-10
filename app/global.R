@@ -34,6 +34,7 @@ getscore <- function(observation, care.w) {
   ordinal <- replace(ordinal, ordinal == "Above the national average", 3)
   ordinal <- replace(ordinal, ordinal == "Below the national average", 1)
   ordinal <- replace(ordinal, ordinal == "Same as the national average", 2)
+  ordinal <- replace(ordinal, ordinal == "Not Available", 0)
   ordinal <- as.numeric(ordinal)
   return(sum(ordinal * f.w))
 }
