@@ -1,0 +1,12 @@
+name: hospital_recommendation
+title: hospital_recommendation
+username:
+account: group7project2
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 505716
+bundleId: 1635536
+url: https://group7project2.shinyapps.io/hospital_recommendation/
+when: 1539207167.97161
+asMultiple: FALSE
+asStatic: FALSE
