@@ -261,7 +261,7 @@ ui <- dashboardPage(
                       label = "Cost Range:",
                       min = 2500,
                       max = 160000,
-                      value = c(3000, 20000)
+                      value = c(3000, 40000)
                     ),
                     selectizeInput(
                       "r.care",

@@ -96,4 +96,4 @@ content.fun <- function(selected) {
   
 }
 
-shinyApp(ui, server)
+
