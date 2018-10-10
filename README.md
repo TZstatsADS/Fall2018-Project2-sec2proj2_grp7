@@ -18,7 +18,7 @@ Term: Fall 2018
 
 
 
-+ **Contribution statement**:Xinwei, Lujia, Binhan, Rui, and Yixin participated in group discussions and designed the content of this App. AB and CD developed baseline classification model for evaluation. EF and GH explored feature engineering for improving the baseline model. AB, EF and GH discussed and designed the model evaluation protocol. CD carried out the computation for model evaluation. All team members contributed to the GitHub repository and prepared the presentation. All team members approve our work presented in our GitHub repository including this contribution statement.
++ **Contribution statement**:Xinwei, Lujia, Binhan, Rui, and Yixin participated in group discussions and designed the content of this App. Lujia developed baseline dashboard UI, the sub UI of hospital recommendation tab, and the server for interactive mapout. Rui cleaned, merged various raw data sets, and produced the final data frame to be used in both overview and recommendation. Binhan developed the model algorithm for calculating performance score and generated the data table output. Yixin developed an upgraded version of statistical overview of our database. Xinwei polished pages including user manual and credits, and she also helped other members resolve issues occured along the road. All team members approve our work presented in our GitHub repository including this contribution statement.
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
