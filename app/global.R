@@ -30,7 +30,7 @@ library(tidyr)
 
 #load data
 load("../output/data.RData")
-hospital_info <- read.csv("../data/hospital_2016.csv")
+hospital_info <- read.csv("../output/hospital_2016.csv")
 
 DRG.2016 <- as.vector(unique(hospital_info$DRG.Definition))
 states.2016 <- as.vector(unique(hospital_info$State))

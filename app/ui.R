@@ -3,7 +3,6 @@ ui <- dashboardPage(
   skin = "yellow",
   # Sidebar - Introduction + Overview(Trend+Heatmap+Comparison) + Recommendation
   dashboardSidebar(
-    sidebarMenu(
       sidebarMenu(
         id = "menu",
         menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
@@ -39,6 +38,7 @@ ui <- dashboardPage(
           tabName = "Recommendation",
           icon = icon("medkit")
         )
+       
       ),
       conditionalPanel(
         condition = "input.menu == 'Hospital_Comparison'",
@@ -78,14 +78,9 @@ ui <- dashboardPage(
           choice = DRG,
           selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
         )
-      ),
-      menuItem(
-        "Find Your Hospital",
-        tabName = "Recommendation",
-        icon = icon("medkit")
       )
-    )
-  ),
+
+    ),
   # Body
   dashboardBody(
     tabItems(
@@ -94,7 +89,7 @@ ui <- dashboardPage(
                 img(
                   src = "logo.jpg",
                   height = 700,
-                  width = 1350
+                  width = 1000
                 )
               )),
       #Introduction tab - user manual
@@ -244,72 +239,73 @@ ui <- dashboardPage(
                          fluidRow(box(
                            width = 12, htmlOutput("subtable1")
                          )))
+              )),
+      #Recommendation tab - map + recommendation filter + table + infobox
+      tabItem(tabName = "Recommendation",
+              fluidRow(
+                column(
+                  width = 4,
+                  box(
+                    title = "Preference Control",
+                    background = "navy",
+                    collapsible = TRUE,
+                    width = NULL,
+                    selectizeInput(
+                      "r.state",
+                      label = "Select State:",
+                      choice = states.2016,
+                      selected = "NY"
+                    ),
+                    sliderInput(
+                      "r.cost",
+                      label = "Cost Range:",
+                      min = 2500,
+                      max = 160000,
+                      value = c(3000, 20000)
+                    ),
+                    selectizeInput(
+                      "r.care",
+                      label = "Most Cared Hospital Quality:",
+                      choices = c(
+                        "Selected",
+                        "Mortality",
+                        "Safety of Care",
+                        "Readmission Rate",
+                        "Patient Experience",
+                        "Effectiveness of Care",
+                        "Timeliness of Care",
+                        "Efficient Use of Medical Imaging"
+                      ),
+                      selected = c("Selected")
+                    ),
+                    selectInput(
+                      "r.drg",
+                      label = "Select Your Diagnosis Related Group:",
+                      choices = DRG.2016,
+                      selected = "039 - EXTRACRANIAL PROCEDURES W/O CC/MCC"
+                    )
+                    #submitButton("Submit",width='100%')
+                  ),
+                  valueBoxOutput("vbox_1", width = NULL),
+                  valueBoxOutput("vbox_2", width = NULL),
+                  valueBoxOutput("vbox_3", width = NULL)
+                ),
+                column(
+                  width = 8,
+                  box(#title = "Navigation",
+                    width = NULL,
+                    leafletOutput(outputId = "map")),
+                  box(
+                    title = "Search Result",
+                    width = NULL,
+                    dataTableOutput(outputId = "r.df")
+                  )
+                )
               ))
       
-    ),
+    )
     
-    #Recommendation tab - map + recommendation filter + table + infobox
-    tabItem(tabName = "Recommendation",
-            fluidRow(
-              column(
-                width = 4,
-                box(
-                  title = "Preference Control",
-                  background = "navy",
-                  collapsible = TRUE,
-                  width = NULL,
-                  selectizeInput(
-                    "r.state",
-                    label = "Select State:",
-                    choice = states.2016,
-                    selected = "NY"
-                  ),
-                  sliderInput(
-                    "r.cost",
-                    label = "Cost Range:",
-                    min = 2500,
-                    max = 160000,
-                    value = c(3000, 20000)
-                  ),
-                  selectizeInput(
-                    "r.care",
-                    label = "Most Cared Hospital Quality:",
-                    choices = c(
-                      "Selected",
-                      "Mortality",
-                      "Safety of Care",
-                      "Readmission Rate",
-                      "Patient Experience",
-                      "Effectiveness of Care",
-                      "Timeliness of Care",
-                      "Efficient Use of Medical Imaging"
-                    ),
-                    selected = c("Selected")
-                  ),
-                  selectInput(
-                    "r.drg",
-                    label = "Select Your Diagnosis Related Group:",
-                    choices = DRG.2016,
-                    selected = "039 - EXTRACRANIAL PROCEDURES W/O CC/MCC"
-                  )
-                  #submitButton("Submit",width='100%')
-                ),
-                valueBoxOutput("vbox_1", width = NULL),
-                valueBoxOutput("vbox_2", width = NULL),
-                valueBoxOutput("vbox_3", width = NULL)
-              ),
-              column(
-                width = 8,
-                box(#title = "Navigation",
-                  width = NULL,
-                  leafletOutput(outputId = "map")),
-                box(
-                  title = "Search Result",
-                  width = NULL,
-                  dataTableOutput(outputId = "r.df")
-                )
-              )
-            ))
+
   )
 )
 
