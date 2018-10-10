@@ -43,6 +43,15 @@ Xinwei polished pages including user manual and credits, and she also helped oth
 
 All team members approve our work presented in our GitHub repository including this contribution statement.
 
++ **Reference**: 
+
+1. https://data.cms.gov/Medicare-Inpatient/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3
+2. https://data.cms.gov/Medicare-Inpatient/Inpatient-Prospective-Payment-System-IPPS-Provider/fm2n-hjj6
+3. https://www.cms.gov/research-statistics-data-and-systems/statistics-trends-and-reports/medicare-provider-charge-data/inpatient.html
+2. https://github.com/TZstatsADS/Spring2018-Project2-Group8
+3. https://github.com/TZstatsADS/Spr2017-proj2-grp6
+4. https://nycdatascience.com/blog/student-works/simple-medicare-hospital-recommendation-system/
+
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
 ```
