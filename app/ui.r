@@ -1,5 +1,6 @@
 packages.used=c("shiny", "plotly", "shinydashboard", "leaflet")
 
+
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
                         intersect(installed.packages()[,1], 
