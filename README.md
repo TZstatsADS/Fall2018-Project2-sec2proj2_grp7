@@ -17,7 +17,7 @@ The **learning goals** for this project is:
 
 *The above general statement about project 2 can be removed once you are finished with your project. It is optional.
 
-## Project Title Lorem ipsum dolor sit amet
+## Project Title Hospital GoGo
 Term: Fall 2018
 
 + Team #7
