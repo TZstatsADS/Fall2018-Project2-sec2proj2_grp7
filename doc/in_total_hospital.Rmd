@@ -67,14 +67,11 @@ nrow(in_total_hospital)
 ```
 
 # data output
-```{r}
-write.csv(in_total_hospital, "in_total_hospital.csv")
-```
 
 ?save data
 ```{r}
 save(in_total_hospital, in_total, in_2011_spending, in_2012_spending, in_2013_spending,
-     in_2014_spending, in_2015_spending, in_2016_spending, file = "data.RData")
+     in_2014_spending, in_2015_spending, in_2016_spending, file = "../output/data.RData")
 ```
 
 
