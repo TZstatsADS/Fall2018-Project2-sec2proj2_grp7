@@ -23,31 +23,27 @@ library(data.table)
 
 
 #load data
-hospital_info <- read.csv("../data/hospital_full.csv")
+hospital_info <- read.csv("../data/hospital_2016.csv")
 DRG <- as.vector(unique(hospital_info$DRG.Definition))
 hospital_names <- as.vector(unique(hospital_info$Hospital.Name))
 states <- as.vector(unique(hospital_info$State))
 hospital_info$drg <- substring(hospital_info$DRG.Definition, 1, 3)
+hospital_info$cost.w.medicare <- hospital_info$Average.Total.Payments - hospital_info$Average.Medicare.Payments
+
 
 # getscore function used in Server
 getscore <- function(observation, care.w) {
   in.w <-
     c(20, 20, 20, 20, 8, 8, 4) # order is (M, S, R, P, Effect, T, Effic)
   f.w <- in.w * care.w / sum(in.w * care.w)
-  ordinal <- observation[c(22, 24, 26, 28, 30, 32, 34)]
+  ordinal <- as.numeric(observation[c(19, 20, 21, 22, 23, 24, 25)])
   if (length(ordinal) != 7 | length(care.w) != 7) {
     return(NA)
   }
-  ordinal <-
-    replace(ordinal, ordinal == "Above the national average", 3)
-  ordinal <-
-    replace(ordinal, ordinal == "Below the national average", 1)
-  ordinal <-
-    replace(ordinal, ordinal == "Same as the national average", 2)
   ordinal <- replace(ordinal, ordinal == "Not Available", 0)
-  ordinal <- as.numeric(ordinal)
   return(sum(ordinal * f.w))
 }
+
 #popup content generator
 content.fun <- function(selected) {
   content <- paste(
