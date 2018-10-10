@@ -3,7 +3,7 @@
 ### [Project Description](doc/project2_desc.md)
 
 ![screenshot](doc/screenshot2.png)
-## Project Title: Hospital GoGo
+## Project Title: [Hospital GoGo](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
 Term: Fall 2018
 
 + Team #7
