@@ -1,0 +1,80 @@
+---
+title: "data prepare"
+author: "Yixin Zhang (yz3223)"
+date: "October 3, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load data
+```{r}
+data.11 <- read.csv("Medicare_Provider_Charge_Inpatient_DRG100_FY2011.csv")
+data.12 <- read.csv("Medicare_Provider_Charge_Inpatient_DRG100_FY2012.csv")
+data.13 <- read.csv("Medicare_Provider_Charge_Inpatient_DRG100_FY2013.csv")
+data.14 <- read.csv("Medicare_Provider_Charge_Inpatient_DRGALL_FY2014.csv")
+data.15 <- read.csv("Medicare_Provider_Charge_Inpatient_DRGALL_FY2015.csv")
+data.16 <- read.csv("Medicare_Provider_Charge_Inpatient_DRGALL_FY2016.csv")
+```
+
+```{r}
+head(data.11)
+head(data.16)
+```
+# Keep drg, id, state,average covered charges, average total payments and average medicare payments
+```{r}
+data.11 <- data.11[,c(1,3,6,10,11,12)]
+data.12 <- data.12[,c(1,3,6,10,11,12)]
+data.13 <- data.13[,c(1,3,6,10,11,12)]
+data.14 <- data.14[,c(1,3,6,10,11,12)]
+data.15 <- data.15[,c(1,3,6,10,11,12)]
+data.16 <- data.16[,c(1,3,6,10,11,12)]
+
+data.11$year <- as.factor(2011)
+data.12$year <- as.factor(2012)
+data.13$year <- as.factor(2013)
+data.14$year <- as.factor(2014)
+data.15$year <- as.factor(2015)
+data.16$year <- as.factor(2016)
+
+head(data.11)
+head(data.16)
+```
+
+# filter rows
+```{r}
+drg <- as.vector(unique(data.11$DRG.Definition))
+data.12.sub <- data.12 %>% filter(DRG.Definition %in% drg)
+data.13.sub <- data.13 %>% filter(DRG.Definition %in% drg)
+data.14.sub <- data.14 %>% filter(DRG.Definition %in% drg)
+data.15.sub <- data.15 %>% filter(DRG.Definition %in% drg)
+data.16.sub <- data.16 %>% filter(DRG.Definition %in% drg)
+head(data.16.sub)
+
+nrow(data.11)
+nrow(data.16)
+nrow(data.14.sub)
+nrow(data.15.sub)
+nrow(data.16.sub)
+```
+
+# merge data
+```{r}
+in_total_hospital <- rbind(data.11, data.12.sub, data.13.sub, data.14.sub, data.15.sub, data.16.sub)
+nrow(in_total_hospital)
+```
+
+# data output
+```{r}
+write.csv(in_total_hospital, "in_total_hospital.csv")
+```
+
+?save data
+```{r}
+save(in_total_hospital, in_total, in_2011_spending, in_2012_spending, in_2013_spending,
+     in_2014_spending, in_2015_spending, in_2016_spending, file = "data.RData")
+```
+
+
