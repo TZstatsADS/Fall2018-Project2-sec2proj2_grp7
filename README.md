@@ -26,6 +26,7 @@ This APP is intended to help patients to find hospitals where they will receive 
 
 Feeling good, right? Please don't wait, go find your best hospital by clicking here [Hospital GoGo](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
 
+![image](output/Screen.Shot.png)
 
 + **Contribution statement**:
 
