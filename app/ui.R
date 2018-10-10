@@ -122,17 +122,15 @@ ui <- dashboardPage(
                     )
                     #submitButton("Submit",width='100%')
                   ),
-                  valueBoxOutput("vbox_1",width = NULL),
-                  valueBoxOutput("vbox_2",width = NULL),
-                  valueBoxOutput("vbox_3",width = NULL)
+                  valueBoxOutput("vbox_1", width = NULL),
+                  valueBoxOutput("vbox_2", width = NULL),
+                  valueBoxOutput("vbox_3", width = NULL)
                 ),
                 column(
                   width = 8,
-                  box(
-                    #title = "Navigation",
+                  box(#title = "Navigation",
                     width = NULL,
-                    leafletOutput(outputId = "map")
-                  ),
+                    leafletOutput(outputId = "map")),
                   box(
                     title = "Search Result",
                     width = NULL,

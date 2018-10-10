@@ -90,7 +90,7 @@ server <- function(input, output) {
                     iconColor = "white")
   # Observe event - select row in table
   observeEvent(input$r.df_rows_selected, {
-    row_selected = df3()[input$r.df_rows_selected,]
+    row_selected = df3()[input$r.df_rows_selected, ]
     proxy <- leafletProxy('map')
     proxy %>% addAwesomeMarkers(
       lng = row_selected$lon,
@@ -98,8 +98,12 @@ server <- function(input, output) {
       icon = icon.flag,
       layerId = as.character(row_selected$Provider.Id),
       popup = content.fun(row_selected)
-    ) %>% fitBounds(lng1=row_selected$lon+0.1,lng2=row_selected$lon-0.1,
-                    lat1=row_selected$lat+0.1,lat2=row_selected$lat-0.1)
+    ) %>% fitBounds(
+      lng1 = row_selected$lon + 0.1,
+      lng2 = row_selected$lon - 0.1,
+      lat1 = row_selected$lat + 0.1,
+      lat2 = row_selected$lat - 0.1
+    )
     # Reset previously seleted marker
     if (!is.null(prev_row())) {
       proxy %>% addMarkers(
@@ -112,7 +116,7 @@ server <- function(input, output) {
     # set new value to reactiveVal
     prev_row(row_selected)
   })
-
+  
   #leaflet map output (interactive with user's input)
   output$map <- renderLeaflet({
     leaflet(data = df3()) %>% addTiles() %>% addAwesomeMarkers(
@@ -145,7 +149,7 @@ server <- function(input, output) {
   output$vbox_2 <- renderValueBox({
     valueBox(
       subtitle = "Average Quality",
-      value = round(100*mean(score()[score()>0])/max(score()),0),
+      value = round(100 * mean(score()[score() > 0]) / max(score()), 0),
       color = "yellow",
       icon = icon("thumbs-up", lib = "glyphicon")
     )
@@ -155,7 +159,9 @@ server <- function(input, output) {
   output$vbox_3 <- renderValueBox({
     valueBox(
       subtitle = "Average Cost",
-      value = paste(round(mean(df3()$Average.Total.Payments,na.rm = TRUE),0),"$"),
+      value = paste(round(
+        mean(df3()$Average.Total.Payments, na.rm = TRUE), 0
+      ), "$"),
       color = "blue",
       icon = icon("credit-card")
     )
