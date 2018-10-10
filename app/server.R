@@ -423,10 +423,10 @@ server <- function(input, output) {
   })
   # observe Event - click on map
   observeEvent(input$map_marker_click, {
-    clickId <- input$map_marker_click$Provider.ID
+    clickId <- input$map_marker_click$id
     dataTableProxy("r.df") %>%
       selectRows(which(df4()$Provider.ID == clickId)) %>%
-      selectPage(which(input$r.df_rows_all == clickId) %/%
+      selectPage(which(input$r.df_rows_all == which(df4()$Provider.ID == clickId)) %/%
                    input$r.df_state$length + 1)
   })
   
