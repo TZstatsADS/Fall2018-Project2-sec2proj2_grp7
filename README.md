@@ -16,8 +16,11 @@ Term: Fall 2018
 
 + **Project summary**:
 Are you still feel difficult to make decision on which hospital is good to go? 
+
 Do you still worry about the hospital billing varies widely but the pricing does not reflect quality of care? 
+
 Now, finding a fitted hospital is a piece of cake. We provide an updated version 2.0 interactive hospital recommendation APP implemented in R using Shiny.
+
 This APP is intended to help patients to find hospitals where they will receive high-quality care with reasonable payment. It allows patients to compare cost and quality information at different hospitals based on their diagnosis related groups. 
 
 Feeling good, right? Please don't wait, go find your best hospital by clicking here [Hospital GoGo](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
