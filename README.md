@@ -15,6 +15,7 @@ Term: Fall 2018
 	+ 5 Zhang, Yixin yz3223@columbia.edu
 
 + **Project summary**:
+
 Are you still feel difficult to make decision on which hospital is good to go? 
 
 Do you still worry about the hospital billing varies widely but the pricing does not reflect quality of care? 
