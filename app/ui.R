@@ -100,14 +100,20 @@ ui <- dashboardPage(
                   h3(textOutput("read1")),
                   hr(),
                   textOutput("read2"),
+                  hr(),
                   textOutput("read3"),
+                  hr(),
                   textOutput("read4"),
+                  hr(),
                   textOutput("read5"),
                   hr(),
                   h3(textOutput("read6")),
                   textOutput("read7"),
+                  hr(),
                   textOutput("read8"),
+                  hr(),
                   textOutput("read9"),
+                  hr(),
                   textOutput("read10")
                   
                 )
@@ -117,8 +123,10 @@ ui <- dashboardPage(
       tabItem(tabName = "TeamInfo",
               fluidRow(
                 mainPanel(
-                  h3(textOutput("team0")),
+                  h2(textOutput("team0")),
+                  hr(),
                   textOutput("team1"),
+                  hr(),
                   textOutput("team2"),
                   hr(),
                   textOutput("team3"),
@@ -126,11 +134,11 @@ ui <- dashboardPage(
                   textOutput("team5"),
                   textOutput("team6"),
                   textOutput("team7"),
-                  textOutput("team8")
+                  hr(),
+                  h3(textOutput("team8"))
                   
                 )
               )),
-      
       ## tab Inpatient- Overview ##
       tabItem(tabName = "Overview",
               
