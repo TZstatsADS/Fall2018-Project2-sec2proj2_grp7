@@ -1,0 +1,118 @@
+---
+title: "in_total"
+author: "Yixin Zhang (yz3223)"
+date: "October 8, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load data
+```{r}
+library(dplyr)
+sum.11 <- read.csv("../data/Summary2011.csv")
+sum.12 <- read.csv("../data/Summary2012.csv")
+sum.13 <- read.csv("../data/Summary2013.csv")
+sum.14 <- read.csv("../data/Summary2014.csv")
+sum.15 <- read.csv("../data/Summary2015.csv")
+sum.16 <- read.csv("../data/Summary2016.csv")
+
+head(sum.11)
+head(sum.16)
+```
+
+```{r}
+sum.11 <- sum.11[,c(1,2,4,5,6,7)]
+sum.12 <- sum.12[,c(1,2,4,5,6,7)]
+sum.13 <- sum.13[,c(1,2,4,5,6,7)]
+sum.14 <- sum.14[,c(1,2,4,5,6,7)]
+sum.15 <- sum.15[,c(1,2,4,5,6,7)]
+sum.16 <- sum.16[,c(1,2,4,5,6,7)]
+
+sum.11$year <- 2011
+sum.12$year <- 2012
+sum.13$year <- 2013
+sum.14$year <- 2014
+sum.15$year <- 2015
+sum.16$year <- 2016
+
+head(sum.11)
+head(sum.16)
+```
+
+# filter rows
+```{r}
+
+drg <- as.vector(unique(sum.11$DRG.Definition))
+sum.12.sub <- sum.12 %>% filter(DRG.Definition %in% drg)
+sum.13.sub <- sum.13 %>% filter(DRG.Definition %in% drg)
+sum.14.sub <- sum.14 %>% filter(DRG.Definition %in% drg)
+sum.15.sub <- sum.15 %>% filter(DRG.Definition %in% drg)
+sum.16.sub <- sum.16 %>% filter(DRG.Definition %in% drg)
+head(sum.16.sub)
+
+nrow(sum.11)
+nrow(sum.16)
+nrow(sum.14.sub)
+nrow(sum.15.sub)
+nrow(sum.16.sub)
+```
+
+# merge data
+```{r}
+in_total <- rbind(sum.11, sum.12.sub, sum.13.sub, sum.14.sub, sum.15.sub, sum.16.sub)
+nrow(in_total)
+```
+
+# data output
+```{r}
+write.csv(in_total, "../output/in_total.csv")
+```
+
+# in_year_spending
+```{r}
+head(sum.11)
+```
+
+```{r}
+dise_mean <- sum.11 %>%
+  group_by(DRG.Definition) %>%
+  summarise(mean_1 = mean(Average.Covered.Charges), 
+            mean_2 = mean(Average.Medicare.Payments), 
+            mean_3 = mean(Average.Total.Payments))
+head(dise_mean)
+```
+
+
+
+```{r}
+in_2011_spending <- aggregate(sum.11[,3:6],by=list(drg=sum.11$DRG.Definition),FUN=mean)
+in_2012_spending <- aggregate(sum.12.sub[,3:6],by=list(drg=sum.12.sub$DRG.Definition),FUN=mean)
+in_2013_spending <- aggregate(sum.13.sub[,3:6],by=list(drg=sum.13.sub$DRG.Definition),FUN=mean)
+in_2014_spending <- aggregate(sum.14.sub[,3:6],by=list(drg=sum.14.sub$DRG.Definition),FUN=mean)
+in_2015_spending <- aggregate(sum.15.sub[,3:6],by=list(drg=sum.15.sub$DRG.Definition),FUN=mean)
+in_2016_spending <- aggregate(sum.16.sub[,3:6],by=list(drg=sum.16.sub$DRG.Definition),FUN=mean)
+
+
+head(in_2011_spending)
+head(in_2016_spending)
+```
+
+```{r}
+in_2011_spending$Total.Spending <- in_2011_spending$Total.Discharges * in_2011_spending$Average.Medicare.Payments
+
+in_2012_spending$Total.Spending <- in_2012_spending$Total.Discharges * in_2012_spending$Average.Medicare.Payments
+
+in_2013_spending$Total.Spending <- in_2013_spending$Total.Discharges * in_2013_spending$Average.Medicare.Payments
+
+in_2014_spending$Total.Spending <- in_2014_spending$Total.Discharges * in_2014_spending$Average.Medicare.Payments
+
+in_2015_spending$Total.Spending <- in_2015_spending$Total.Discharges * in_2015_spending$Average.Medicare.Payments
+
+in_2016_spending$Total.Spending <- in_2016_spending$Total.Discharges * in_2016_spending$Average.Medicare.Payments
+```
+
+
+
