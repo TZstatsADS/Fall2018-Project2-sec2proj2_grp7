@@ -1,142 +1,180 @@
-packages.used=c("shiny", "plotly", "shinydashboard", "leaflet")
-
-# check packages that need to be installed.
-packages.needed=setdiff(packages.used, 
-                        intersect(installed.packages()[,1], 
-                                  packages.used))
-# install additional packages
-if(length(packages.needed)>0){
-  install.packages(packages.needed, dependencies = TRUE)
-}
-
-
-library(shiny)
-library(plotly)
-library(leaflet)
 library(shinydashboard)
 
-  dashboardPage(
-    dashboardHeader(title = "Hospital For You"),
-    skin = "green",
-    dashboardSidebar(
-      width = 260,
-      sidebarMenu(id="tabs",
-                  menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
-                  menuItem("Introduction",  icon = icon("file-text-o"),
-                           menuSubItem("Read Me", tabName = "ReadMe", icon = icon("angle-right")),
-                           menuSubItem("Criterion Measurement", tabName = "CM", icon = icon("angle-right")),
-                           menuSubItem("About Team", tabName = "AboutTeam", icon = icon("angle-right"))),
-                  menuItem("Summary Statistics", tabName = "SummaryStat", icon = icon("area-chart")),
-                  menuItem("Hospital Recommendation", tabName = "HospitalRecommend", icon=icon("table"))),
-      hr(),
-      
-      selectInput("state", label = "State", 
-                choices = c("Select","AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN",
-                            "IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV",
-                            "NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN",
-                            "TX","UT","VT","VA","WA","WV","WI","WY"), selected = "Select"),
-      selectInput("type", label = "Type", 
-                  choices = c("Select","Acute Care Hospitals","Critical Access Hospitals","Childrens"), selected = "Select"),
-      hr(),
-      strong("Please select your preferences: "),
-      # Criterion for hospitals
-      radioButtons("care1",label = "Mortality",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      radioButtons("care2",label = "Safety of Care",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      radioButtons("care3",label = "Readmission Rate",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      radioButtons("care4",label = "Patient Experience",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      radioButtons("care5",label = "Effectiveness of Care",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      radioButtons("care6",label = "Timeliness of Care",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      radioButtons("care7",label = "Efficient Use of Medical Imaging",
-                   choices = list("Very Care"=3,"Care"=2,"Not Care"=1),
-                   selected = 2, inline = T),
-      submitButton("Submit",width='100%')
+shinyUI(dashboardPage(
+  #header
+  dashboardHeader(title = "HospitalCare"),
+  skin = "yellow",
+  #sidebar - Introduction + Overview(Trend+Heatmap+Comparison) + Recommendation
+  dashboardSidebar(
+    sidebarMenu(id="menu",
+                menuItem("About", tabName = "About", icon = icon("info"),
+                         menuSubItem("User Manual", tabName = "UserManual",icon = icon("book")),
+                         menuSubItem("About Team", tabName = "TeamInfo", icon = icon("users"))),
+                menuItem("Overview",tabName = "Summary", icon = icon("th"),
+                         menuSubItem("State Overview", tabName = "Overview", icon = icon("map-o")),
+                         menuSubItem("Spending Exploration", tabName = "Explore", icon = icon("balance-scale")),
+                         menuSubItem("Hospital Comparison", tabName = "Hospital_Comparison", icon = icon("medkit"))),
+                menuItem("Find Your Hospital", tabName = "Recommendation", icon = icon("medkit"))
+                ),
+    conditionalPanel(condition = "input.menu == 'Hospital_Comparison'",
+                     selectizeInput("select_year_2", label = h5("Select year:"),
+                                    choice = year, selected = "2016"),
+                     
+                     selectizeInput("select_DRG_2", label = h5("Select DRG:"),
+                                    choice = DRG, selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"),
+                     
+                     selectizeInput("select_hospital", label = h5("Select hospital:"),
+                                    choice = hospital, selected = "10033", 
+                                    multiple = TRUE)
     ),
-    dashboardBody(
-      tabItems(
-        tabItem(tabName = "Welcome1",
-                mainPanel(
-                  img(src = "logo.png",height=800,width=1000)
-                )),
-        
-        tabItem(tabName = "SummaryStat",
-                fluidRow(
-                  tabBox(width=12,
-                         tabPanel(title="Variable Importance",width=12, plotlyOutput("VI", height = 700)),
-                         tabPanel(title="Number of Hospitals by State\n",plotlyOutput("NHS", height = 700)), 
-                         tabPanel(title="Hospital Quality by State\n",width=12,plotlyOutput("HQS", height = 700))
-                         )
-                  )),  
-        
-        tabItem(tabName = "HospitalRecommend",
-        fluidRow(
-        tabBox(width=12,
-               tabPanel(title="Map",width = 12,solidHeader = T,leafletOutput("map"))
-              ),
-        tabBox(width = 12,
-           
-           tabPanel('MediCare Assessment',
-                    dataTableOutput("tableinfo"),
-                    tags$style(type="text/css", '#myTable tfoot {display:none;}')),
-           tabPanel('Personalized Ranking',
-                    dataTableOutput("tablerank"),
-                    tags$style(type="text/css", '#myTable tfoot {display:none;}')
-                    ))
-    )),
-        tabItem(tabName = "ReadMe",
-            mainPanel(
-              h2(textOutput("read0")),
-              textOutput("read1"),
-              hr(),
-              h3(textOutput("read2")),
-              textOutput("read3"),
-              textOutput("read4"),
-              textOutput("read5"),
-              textOutput("read6"),
-              hr(),
-              h3(textOutput("read7")),
-              textOutput("read8"),
-              a("Here",href = "https://www.medicare.gov/hospitalcompare/search.html")
+    conditionalPanel(condition = "input.menu == 'Overview'",
+                     selectizeInput("select_year", label = h5("Select year:"), 
+                                    choice = year, selected = "2016"),
+                     selectizeInput("select_DRG", label = "Select Diagnosis Related Group:",
+                                    choice = DRG, selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"))
+  ),
+  #body
+  dashboardBody(
+    tabItems(
+      #Introduction tab - user manual
+      tabItem(tabName = "UserManual",
+              fluidRow(
+                tabBox(
+                  width = 12,
+                  
+                  tabPanel(
+                    "About the Dataset",
+                    fluidRow(
+                      column(
+                        width = 8, 
+                        tags$h4("The Centers for Medicare and Medicaid (CMS) released Inpatient Charge Data from FY 2011, The Inpatient data describes the following
+                                data elements:"),
+                        tags$h3("-DRG:"),tags$h4("A Diagnosis Related Group is a statistical system of classifying inpatient stays into groups for the purposes of payment. The CMS data provides average payments for providers organized by individual DRGs."),
+                        tags$h3("-Provider:"),tags$h4("Individual providers are described by their id, name and address."),
+                        tags$h3("-Total Discharges:"),tags$h4("This is simply the count of the number of discharges for that DRG and Provider."),
+                        tags$h3("-Average Covered Charges:"),tags$h4("Hospital billing costs, which are used as negotiating points and not particularly meaningful in terms of the actual amounts paid by Medicare. These are the charges that would be billed to a patient without insurance."),
+                        tags$h3("-Average Medicare Payments:"),tags$h4("The average amount that Medicare pays to the provider for Medicare's share of the MS-DRG."),
+                        tags$h3("-Average Total Payments:"),tags$h4("Including the co-payments and deductibles that the patient is responsible for, as well as additional payments by third parties, in addition to Medicare payments."),
+                        tags$a(href = 'https://questions.cms.gov/faq.php?id=5005&rtopic=2038&rsubtopic=7950',
+                               "Learn more at CMS")),
+                      column(
+                        width = 4,align = "bottom right",
+                        tags$img(src = "bill.jpg", width = "300px", height = "300px"))))
+                  
+                  )
+              ))
+      ,
+      #Introduction tab - about team
+      tabItem(tabName = "TeamInfo",
+              fluidRow(box(
+                title = "Team Members", width = 12
+              ))),
+      
+      ## tab Inpatient- Overview ##      
+      tabItem(tabName = "Overview",
+              
+              # fluidRow(
+              tabsetPanel(
+                tabPanel(
+                  'Map',
+                  fluidRow(
+                    box(width = 6, title = "Average Charges by State",
+                        htmlOutput("geo_plot")),
+                    box(width = 6, title = "Average Medicare Payments by State",
+                        htmlOutput("g_plot"))
+                    #   box(width = 3,
+                    #       selectizeInput("select_year", label = "Select year:", 
+                    #                   choice = year, selected = "2014"),
+                    #       selectizeInput("select_cost", label = "Select charges/payments:", 
+                    #                   choice = cost, selected = "Charges"),
+                    #       selectizeInput("select_DRG", label = "Select Diagnosis Related Group)",
+                    #                   choice = DRG, selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC")))
+                  ),
+                  
+                  fluidRow(
+                    box(width = 6,
+                        htmlOutput("hist_plot")),
+                    box(width = 6,
+                        htmlOutput("histogram_plot"))
+                    
+                  )
+                ),
+                tabPanel(
+                  'Explore by State',
+                  fluidRow(
+                    box(width = 6,
+                        htmlOutput("col_plot")),
+                    box(width = 6,
+                        htmlOutput("con_plot"))
+                    
+                  )
+                ),
+                
+                tabPanel(
+                  'Table',
+                  dataTableOutput("sum_table")
+                  
+                )
+                
+                
               )),
-        tabItem(tabName = "CM",
-                mainPanel(
-                  h3(textOutput("read9")),
-                  textOutput("read10"),
-                  textOutput("read11"),
-                  textOutput("read12"),
-                  textOutput("read13"),
-                  textOutput("read14"),
-                  textOutput("read15"),
-                  textOutput("read16"),
-                  hr(),
-                  textOutput("read17"),
-                  a("Here",href = "https://www.medicare.gov/hospitalcompare/Data/Measure-groups.html")
-                )),
-        tabItem(tabName = "AboutTeam",
-            mainPanel(
-              h3(textOutput("team0")),
-              textOutput("team1"),
-              textOutput("team2"),
-              textOutput("team3"),
-              textOutput("team4"),
-              textOutput("team5"),
-              textOutput("team6"),
-              hr(),
-              textOutput("team7")
-            ))
-        
+      ## tab Explore ##
+      tabItem(tabName = "Explore",
+              tabsetPanel(
+                tabPanel(
+                  'Top Spending',
+                  fluidRow(
+                    box(width = 8,
+                        htmlOutput("bubble_plot"),
+                        "The size of bubble represents total Medicare Spending for each DRG",br(),
+                        "Total Medicare Spending = Total Discharges * Average Medicare Payments"),
+                    box(width = 4,
+                        sliderInput(
+                          "select_top", 
+                          label = h5("Select top most expensive (according to total Medicare Spending) DRG:"),
+                          min=5, max=100,value=5,step=5)
+                        )
+                  )),
+                
+                tabPanel(
+                  'Year Trending',
+                  fluidRow(
+                    box(width = 9,
+                        htmlOutput("line_plot")),
+                    box(width = 3,
+                        
+                        selectizeInput("select_DRG_3", label = h3("Select DRG:"),
+                                       choice = DRG, selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"),
+                        selectizeInput("select_hospital_2", label = h3("Select hospital:"),
+                                       choice = hospital, selected = c("SOUTHEAST ALABAMA MEDICAL CENTER"),
+                                       multiple = F)
+                        
+                    )
+                  )))),
+      
+      
+      ## tab Hospital Comparison ##      
+      tabItem(tabName = "Hospital_Comparison",
+              tabsetPanel(
+                tabPanel(
+                  'Chart',
+                  fluidRow(
+                    box(width = 12,
+                        htmlOutput("bar_plot"))
+                  )
+                ),
+                
+                
+                tabPanel(
+                  'Table',
+                  fluidRow(
+                    box(width = 12, htmlOutput("subtable1"))
+                  ))
+              ))
+ 
       )
-    ))
+    )
     
-  
+    
+    
+  ))
