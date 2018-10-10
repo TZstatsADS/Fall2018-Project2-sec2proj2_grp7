@@ -17,11 +17,11 @@ The **learning goals** for this project is:
 
 *The above general statement about project 2 can be removed once you are finished with your project. It is optional.
 
-## Project Title Hospital GoGo
+## Project Title: Hospital GoGo
 Term: Fall 2018
 
 + Team #7
-+ **Projec title**: Hospital GoGo
++ **Team members**: 
 	+ 1 Feng, Xinwei xf2168@columbia.edu
 	+ 2 Wang, Lujia lw2772@columbia.edu
 	+ 3 Wang, Binhan bw2544@columbia.edu
