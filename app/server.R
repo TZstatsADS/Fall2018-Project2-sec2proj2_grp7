@@ -364,8 +364,8 @@ server <- function(input, output) {
   output$r.df = renderDataTable({
     rankedtable <-
       DT::datatable(
-        #cbind(df4()$Rank[ord()], df4()[ord(), c("Hospital.Name")]),
-        df4()[ord(), c("Rank", "Hospital.Name", "Address")],
+        df4()[ord(), c("Rank", "Hospital.Name", "Hospital.overall.rating", "cost.w.medicare", 
+                       "Average.Total.Payments")],
         selection = "single",
         options = list(
           stateSave = TRUE,
