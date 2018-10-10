@@ -43,7 +43,7 @@ Xinwei polished pages including user manual and credits, and she also helped oth
 
 All team members approve our work presented in our GitHub repository including this contribution statement.
 
-+ **Reference**: 
++ **References**: 
 
 1. https://data.cms.gov/Medicare-Inpatient/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3
 2. https://data.cms.gov/Medicare-Inpatient/Inpatient-Prospective-Payment-System-IPPS-Provider/fm2n-hjj6
