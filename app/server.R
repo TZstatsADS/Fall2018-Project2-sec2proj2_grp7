@@ -423,10 +423,12 @@ server <- function(input, output) {
   # observe Event - click on map
   observeEvent(input$map_marker_click, {
     clickId <- input$map_marker_click$id
+    rowNum <- which(input$r.df_rows_all == which(df4()$Provider.ID == clickId))
     dataTableProxy("r.df") %>%
       selectRows(which(df4()$Provider.ID == clickId)) %>%
-      selectPage(which(input$r.df_rows_all == which(df4()$Provider.ID == clickId)) %/%
-                   input$r.df_state$length + 1)
+      selectPage(ifelse(rowNum %% input$r.df_state$length == 0, 
+                        rowNum %/% input$r.df_state$length,
+                        rowNum %/% input$r.df_state$length + 1))
   })
   
   #value box - number of hospitals
