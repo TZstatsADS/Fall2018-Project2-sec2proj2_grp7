@@ -3,7 +3,10 @@ packages.used = c("shiny",
                   "dplyr",
                   "DT",
                   "leaflet",
-                  "data.table")
+                  "data.table",
+                  "ggmap",
+                  "tidyr",
+                  "googleVis")
 
 # check packages that need to be installed.
 packages.needed = setdiff(packages.used,
@@ -20,16 +23,25 @@ library(dplyr)
 library(leaflet)
 library(DT)
 library(data.table)
+library(ggmap)
+library(googleVis)
+library(tidyr)
 
 
 #load data
+load("../output/data.RData")
 hospital_info <- read.csv("../data/hospital_2016.csv")
-DRG <- as.vector(unique(hospital_info$DRG.Definition))
-hospital_names <- as.vector(unique(hospital_info$Hospital.Name))
-states <- as.vector(unique(hospital_info$State))
+
+DRG.2016 <- as.vector(unique(hospital_info$DRG.Definition))
+states.2016 <- as.vector(unique(hospital_info$State))
 hospital_info$drg <- substring(hospital_info$DRG.Definition, 1, 3)
 hospital_info$cost.w.medicare <- hospital_info$Average.Total.Payments - hospital_info$Average.Medicare.Payments
 
+year = list("2011" = "2011", "2012" = "2012", "2013" = "2013", "2014" = "2014", "2015" = "2015", "2016" = "2016")
+DRG = as.list(unique(in_total$DRG.Definition))
+cost = colnames(in_total)[3:5]
+hospital = as.list(unique(in_total_hospital$Provider.Name))
+top = list("Top 5" = 5, "Top 10" = 10, "Top 20" = 20)
 
 # getscore function used in Server
 getscore <- function(observation, care.w) {

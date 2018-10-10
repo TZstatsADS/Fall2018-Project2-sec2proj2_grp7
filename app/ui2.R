@@ -1,82 +1,39 @@
-ui <- dashboardPage(
+library(shinydashboard)
+
+shinyUI(dashboardPage(
+  #header
   dashboardHeader(title = "HospitalCare"),
-  skin = "yellow",
-  # Sidebar - Introduction + Overview(Trend+Heatmap+Comparison) + Recommendation
+  skin = "blue",
+  #sidebar - Introduction + Overview(Trend+Heatmap+Comparison) + Recommendation
   dashboardSidebar(
     sidebarMenu(
-      sidebarMenu(
-        id = "menu",
-        menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
-        menuItem(
-          "About",
-          tabName = "About",
-          icon = icon("info"),
-          menuSubItem("User Manual", tabName = "UserManual", icon = icon("book")),
-          menuSubItem("About Team", tabName = "TeamInfo", icon = icon("users"))
+      id = "menu",
+      menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
+      menuItem(
+        "About",
+        tabName = "About",
+        icon = icon("info"),
+        menuSubItem("User Manual", tabName = "UserManual", icon = icon("book")),
+        menuSubItem("About Team", tabName = "TeamInfo", icon = icon("users"))
+      ),
+      menuItem(
+        "Overview",
+        tabName = "Summary",
+        icon = icon("th"),
+        menuSubItem(
+          "State Overview",
+          tabName = "Overview",
+          icon = icon("map-o")
         ),
-        menuItem(
-          "Overview",
-          tabName = "Summary",
-          icon = icon("th"),
-          menuSubItem(
-            "State Overview",
-            tabName = "Overview",
-            icon = icon("map-o")
-          ),
-          menuSubItem(
-            "Spending Exploration",
-            tabName = "Explore",
-            icon = icon("balance-scale")
-          ),
-          menuSubItem(
-            "Hospital Comparison",
-            tabName = "Hospital_Comparison",
-            icon = icon("medkit")
-          )
+        menuSubItem(
+          "Spending Exploration",
+          tabName = "Explore",
+          icon = icon("balance-scale")
         ),
-        menuItem(
-          "Find Your Hospital",
-          tabName = "Recommendation",
+        menuSubItem(
+          "Hospital Comparison",
+          tabName = "Hospital_Comparison",
           icon = icon("medkit")
-        )
-      ),
-      conditionalPanel(
-        condition = "input.menu == 'Hospital_Comparison'",
-        selectizeInput(
-          "select_year_2",
-          label = h5("Select year:"),
-          choice = year,
-          selected = "2016"
-        ),
-        
-        selectizeInput(
-          "select_DRG_2",
-          label = h5("Select DRG:"),
-          choice = DRG,
-          selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
-        ),
-        
-        selectizeInput(
-          "select_hospital",
-          label = h5("Select hospital:"),
-          choice = hospital,
-          selected = "10033",
-          multiple = TRUE
-        )
-      ),
-      conditionalPanel(
-        condition = "input.menu == 'Overview'",
-        selectizeInput(
-          "select_year",
-          label = h5("Select year:"),
-          choice = year,
-          selected = "2016"
-        ),
-        selectizeInput(
-          "select_DRG",
-          label = "Select Diagnosis Related Group:",
-          choice = DRG,
-          selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
         )
       ),
       menuItem(
@@ -84,9 +41,48 @@ ui <- dashboardPage(
         tabName = "Recommendation",
         icon = icon("medkit")
       )
+    ),
+    conditionalPanel(
+      condition = "input.menu == 'Hospital_Comparison'",
+      selectizeInput(
+        "select_year_2",
+        label = h5("Select year:"),
+        choice = year,
+        selected = "2016"
+      ),
+      
+      selectizeInput(
+        "select_DRG_2",
+        label = h5("Select DRG:"),
+        choice = DRG,
+        selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
+      ),
+      
+      selectizeInput(
+        "select_hospital",
+        label = h5("Select hospital:"),
+        choice = hospital,
+        selected = "10033",
+        multiple = TRUE
+      )
+    ),
+    conditionalPanel(
+      condition = "input.menu == 'Overview'",
+      selectizeInput(
+        "select_year",
+        label = h5("Select year:"),
+        choice = year,
+        selected = "2016"
+      ),
+      selectizeInput(
+        "select_DRG",
+        label = "Select Diagnosis Related Group:",
+        choice = DRG,
+        selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
+      )
     )
   ),
-  # Body
+  #body
   dashboardBody(
     tabItems(
       tabItem(tabName = "Welcome1",
@@ -246,70 +242,9 @@ ui <- dashboardPage(
                          )))
               ))
       
-    ),
-    
-    #Recommendation tab - map + recommendation filter + table + infobox
-    tabItem(tabName = "Recommendation",
-            fluidRow(
-              column(
-                width = 4,
-                box(
-                  title = "Preference Control",
-                  background = "navy",
-                  collapsible = TRUE,
-                  width = NULL,
-                  selectizeInput(
-                    "r.state",
-                    label = "Select State:",
-                    choice = states.2016,
-                    selected = "NY"
-                  ),
-                  sliderInput(
-                    "r.cost",
-                    label = "Cost Range:",
-                    min = 2500,
-                    max = 160000,
-                    value = c(3000, 20000)
-                  ),
-                  selectizeInput(
-                    "r.care",
-                    label = "Most Cared Hospital Quality:",
-                    choices = c(
-                      "Selected",
-                      "Mortality",
-                      "Safety of Care",
-                      "Readmission Rate",
-                      "Patient Experience",
-                      "Effectiveness of Care",
-                      "Timeliness of Care",
-                      "Efficient Use of Medical Imaging"
-                    ),
-                    selected = c("Selected")
-                  ),
-                  selectInput(
-                    "r.drg",
-                    label = "Select Your Diagnosis Related Group:",
-                    choices = DRG.2016,
-                    selected = "039 - EXTRACRANIAL PROCEDURES W/O CC/MCC"
-                  )
-                  #submitButton("Submit",width='100%')
-                ),
-                valueBoxOutput("vbox_1", width = NULL),
-                valueBoxOutput("vbox_2", width = NULL),
-                valueBoxOutput("vbox_3", width = NULL)
-              ),
-              column(
-                width = 8,
-                box(#title = "Navigation",
-                  width = NULL,
-                  leafletOutput(outputId = "map")),
-                box(
-                  title = "Search Result",
-                  width = NULL,
-                  dataTableOutput(outputId = "r.df")
-                )
-              )
-            ))
+    )
   )
-)
-
+  
+  
+  
+))
