@@ -2,7 +2,7 @@
 
 ### [Project Description](doc/project2_desc.md)
 
-## Project Title: [Hospital GoGo](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
+## Project Title: [HospitalCare](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
 Term: Fall 2018
 
 + Team #7
@@ -23,7 +23,7 @@ Now, finding a fitted hospital is a piece of cake. We provide an updated version
 
 This APP is intended to help patients to find hospitals where they will receive high-quality care with reasonable payment. It allows patients to compare cost and quality information at different hospitals based on their diagnosis related groups. 
 
-Feeling good, right? Please don't wait, go find your best hospital by clicking here [Hospital GoGo](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
+Feeling good, right? Please don't wait, go find your best hospital by clicking here [HospitalCare](https://my-code-works-but-i-dont-know-why.shinyapps.io/hospital/)
 
 ![image](output/Screen.Shot.png)
 
