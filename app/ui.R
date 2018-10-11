@@ -296,8 +296,8 @@ ui <- dashboardPage(
                       leafletOutput(outputId = "map")),
                   box(
                     title = "Search Result",
-                    status = "primary",
                     solidHeader = TRUE,
+                    status = "primary",
                     width = NULL,
                     dataTableOutput(outputId = "r.df")
                   )

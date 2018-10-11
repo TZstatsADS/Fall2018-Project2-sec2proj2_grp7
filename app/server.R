@@ -370,7 +370,10 @@ server <- function(input, output) {
           "Hospital.overall.rating",
           "cost.w.medicare",
           "Average.Total.Payments"
-        )],
+        )],colnames = c("Rank","Name",
+                        "Overall Rating",
+                        "Cost w/ Medicare",
+                        "Total Payments"),
         selection = "single",
         options = list(
           stateSave = TRUE,
