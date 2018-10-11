@@ -318,8 +318,8 @@ server <- function(input, output) {
   })
   # filter data with cost range
   df3 <- reactive({
-    df3 <- df2() %>% filter(Average.Total.Payments >= r.cost()[1] &
-                              Average.Total.Payments <= r.cost()[2])
+    df3 <- df2() %>% filter(Average.Covered.Charges >= r.cost()[1] &
+                              Average.Covered.Charges <= r.cost()[2])
   })
   
   
@@ -369,11 +369,11 @@ server <- function(input, output) {
           "Hospital.Name",
           "Hospital.overall.rating",
           "cost.w.medicare",
-          "Average.Total.Payments"
+          "Average.Covered.Charges"
         )],colnames = c("Rank","Name",
                         "Overall Rating",
                         "Cost w/ Medicare",
-                        "Total Payments"),
+                        "Total Charges"),
         selection = "single",
         options = list(
           stateSave = TRUE,
@@ -473,7 +473,7 @@ server <- function(input, output) {
     valueBox(
       subtitle = "Average Cost",
       value = paste("$", round(
-        mean(df4()$Average.Total.Payments, na.rm = TRUE), 0
+        mean(df4()$Average.Covered.Charges, na.rm = TRUE), 0
       )),
       color = "blue",
       icon = icon("credit-card")

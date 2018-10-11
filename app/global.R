@@ -38,7 +38,7 @@ DRG.2016 <- as.vector(unique(hospital_info$DRG.Definition))
 states.2016 <- as.vector(unique(hospital_info$State))
 hospital_info$drg <- substring(hospital_info$DRG.Definition, 1, 3)
 hospital_info$cost.w.medicare <-
-  hospital_info$Average.Total.Payments - hospital_info$Average.Medicare.Payments
+  hospital_info$Average.Covered.Charges - hospital_info$Average.Medicare.Payments
 
 year = list(
   "2011" = "2011",
