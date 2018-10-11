@@ -1,86 +1,86 @@
 ui <- dashboardPage(
   dashboardHeader(title = "HospitalCare"),
-  skin = "yellow",
+  skin = "blue",
   # Sidebar - Introduction + Overview(Trend+Heatmap+Comparison) + Recommendation
   dashboardSidebar(
-      sidebarMenu(
-        id = "menu",
-        menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
-        menuItem(
-          "About",
-          tabName = "About",
-          icon = icon("info"),
-          menuSubItem("User Manual", tabName = "UserManual", icon = icon("book")),
-          menuSubItem("About Team", tabName = "TeamInfo", icon = icon("users"))
+    sidebarMenu(
+      id = "menu",
+      menuItem("Welcome", tabName = "Welcome1", icon = icon("book")),
+      menuItem(
+        "About",
+        tabName = "About",
+        icon = icon("info"),
+        menuSubItem("User Manual", tabName = "UserManual", icon = icon("book")),
+        menuSubItem("About Team", tabName = "TeamInfo", icon = icon("users"))
+      ),
+      menuItem(
+        "Overview",
+        tabName = "Summary",
+        icon = icon("th"),
+        menuSubItem(
+          "State Overview",
+          tabName = "Overview",
+          icon = icon("map-o")
         ),
-        menuItem(
-          "Overview",
-          tabName = "Summary",
-          icon = icon("th"),
-          menuSubItem(
-            "State Overview",
-            tabName = "Overview",
-            icon = icon("map-o")
-          ),
-          menuSubItem(
-            "Spending Exploration",
-            tabName = "Explore",
-            icon = icon("balance-scale")
-          ),
-          menuSubItem(
-            "Hospital Comparison",
-            tabName = "Hospital_Comparison",
-            icon = icon("medkit")
-          )
+        menuSubItem(
+          "Spending Exploration",
+          tabName = "Explore",
+          icon = icon("balance-scale")
         ),
-        menuItem(
-          "Find Your Hospital",
-          tabName = "Recommendation",
+        menuSubItem(
+          "Hospital Comparison",
+          tabName = "Hospital_Comparison",
           icon = icon("medkit")
         )
-       
       ),
-      conditionalPanel(
-        condition = "input.menu == 'Hospital_Comparison'",
-        selectizeInput(
-          "select_year_2",
-          label = h5("Select year:"),
-          choice = year,
-          selected = "2016"
-        ),
-        
-        selectizeInput(
-          "select_DRG_2",
-          label = h5("Select DRG:"),
-          choice = DRG,
-          selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
-        ),
-        
-        selectizeInput(
-          "select_hospital",
-          label = h5("Select hospital:"),
-          choice = hospital,
-          selected = "10033",
-          multiple = TRUE
-        )
-      ),
-      conditionalPanel(
-        condition = "input.menu == 'Overview'",
-        selectizeInput(
-          "select_year",
-          label = h5("Select year:"),
-          choice = year,
-          selected = "2016"
-        ),
-        selectizeInput(
-          "select_DRG",
-          label = "Select Diagnosis Related Group:",
-          choice = DRG,
-          selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
-        )
+      menuItem(
+        "Find Your Hospital",
+        tabName = "Recommendation",
+        icon = icon("medkit")
       )
-
+      
     ),
+    conditionalPanel(
+      condition = "input.menu == 'Hospital_Comparison'",
+      selectizeInput(
+        "select_year_2",
+        label = h5("Select year:"),
+        choice = year,
+        selected = "2016"
+      ),
+      
+      selectizeInput(
+        "select_DRG_2",
+        label = h5("Select DRG:"),
+        choice = DRG,
+        selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
+      ),
+      
+      selectizeInput(
+        "select_hospital",
+        label = h5("Select hospital:"),
+        choice = hospital,
+        selected = "10033",
+        multiple = TRUE
+      )
+    ),
+    conditionalPanel(
+      condition = "input.menu == 'Overview'",
+      selectizeInput(
+        "select_year",
+        label = h5("Select year:"),
+        choice = year,
+        selected = "2016"
+      ),
+      selectizeInput(
+        "select_DRG",
+        label = "Select Diagnosis Related Group:",
+        choice = DRG,
+        selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC"
+      )
+    )
+    
+  ),
   # Body
   dashboardBody(
     tabItems(
@@ -150,13 +150,6 @@ ui <- dashboardPage(
                                htmlOutput("geo_plot")),
                            box(width = 6, title = "Average Medicare Payments by State",
                                htmlOutput("g_plot"))
-                           #   box(width = 3,
-                           #       selectizeInput("select_year", label = "Select year:",
-                           #                   choice = year, selected = "2014"),
-                           #       selectizeInput("select_cost", label = "Select charges/payments:",
-                           #                   choice = cost, selected = "Charges"),
-                           #       selectizeInput("select_DRG", label = "Select Diagnosis Related Group)",
-                           #                   choice = DRG, selected = "470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC")))
                          ),
                          
                          fluidRow(
@@ -268,7 +261,7 @@ ui <- dashboardPage(
                       "r.cost",
                       label = "Cost Range:",
                       min = 2500,
-                      max = 160000,
+                      max = 60000,
                       value = c(3000, 40000)
                     ),
                     selectizeInput(
@@ -292,7 +285,6 @@ ui <- dashboardPage(
                       choices = DRG.2016,
                       selected = "039 - EXTRACRANIAL PROCEDURES W/O CC/MCC"
                     )
-                    #submitButton("Submit",width='100%')
                   ),
                   valueBoxOutput("vbox_1", width = NULL),
                   valueBoxOutput("vbox_2", width = NULL),
@@ -300,20 +292,17 @@ ui <- dashboardPage(
                 ),
                 column(
                   width = 8,
-                  box(#title = "Navigation",
-                    width = NULL,
-                    leafletOutput(outputId = "map")),
+                  box(width = NULL,
+                      leafletOutput(outputId = "map")),
                   box(
                     title = "Search Result",
+                    status = "primary",
+                    solidHeader = TRUE,
                     width = NULL,
                     dataTableOutput(outputId = "r.df")
                   )
                 )
               ))
-      
     )
-    
-
   )
 )
-

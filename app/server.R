@@ -27,7 +27,8 @@ server <- function(input, output) {
   
   output$read6 <-
     renderText({
-      "Want more information about spending? Please click the Overview tab to explore more!"})
+      "Want more information about spending? Please click the Overview tab to explore more!"
+    })
   
   output$read7 <-
     renderText({
@@ -212,7 +213,7 @@ server <- function(input, output) {
     )
     
     gvisBubbleChart(
-      data_1[1:input$select_top,],
+      data_1[1:input$select_top, ],
       xvar = "Average.Medicare.Payments",
       yvar = "Average.Covered.Charges",
       colorvar = "drg",
@@ -363,8 +364,13 @@ server <- function(input, output) {
   output$r.df = renderDataTable({
     rankedtable <-
       DT::datatable(
-        df4()[ord(), c("Rank", "Hospital.Name", "Hospital.overall.rating", "cost.w.medicare", 
-                       "Average.Total.Payments")],
+        df4()[ord(), c(
+          "Rank",
+          "Hospital.Name",
+          "Hospital.overall.rating",
+          "cost.w.medicare",
+          "Average.Total.Payments"
+        )],
         selection = "single",
         options = list(
           stateSave = TRUE,
@@ -384,7 +390,7 @@ server <- function(input, output) {
                     iconColor = "white")
   # Observe event - select row in table
   observeEvent(input$r.df_rows_selected, {
-    row_selected = df4()[input$r.df_rows_selected,]
+    row_selected = df4()[input$r.df_rows_selected, ]
     proxy <- leafletProxy('map')
     proxy %>% addAwesomeMarkers(
       lng = row_selected$lon,
@@ -423,12 +429,17 @@ server <- function(input, output) {
   # observe Event - click on map
   observeEvent(input$map_marker_click, {
     clickId <- input$map_marker_click$id
-    rowNum <- which(input$r.df_rows_all == which(df4()$Provider.ID == clickId))
+    rowNum <-
+      which(input$r.df_rows_all == which(df4()$Provider.ID == clickId))
     dataTableProxy("r.df") %>%
       selectRows(which(df4()$Provider.ID == clickId)) %>%
-      selectPage(ifelse(rowNum %% input$r.df_state$length == 0, 
-                        rowNum %/% input$r.df_state$length,
-                        rowNum %/% input$r.df_state$length + 1))
+      selectPage(
+        ifelse(
+          rowNum %% input$r.df_state$length == 0,
+          rowNum %/% input$r.df_state$length,
+          rowNum %/% input$r.df_state$length + 1
+        )
+      )
   })
   
   #value box - number of hospitals
@@ -455,7 +466,7 @@ server <- function(input, output) {
   output$vbox_3 <- renderValueBox({
     valueBox(
       subtitle = "Average Cost",
-      value = paste("$",round(
+      value = paste("$", round(
         mean(df4()$Average.Total.Payments, na.rm = TRUE), 0
       )),
       color = "blue",
