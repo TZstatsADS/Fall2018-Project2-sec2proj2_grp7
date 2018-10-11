@@ -459,7 +459,7 @@ server <- function(input, output) {
   output$vbox_2 <- renderValueBox({
     valueBox(
       subtitle = "Average Quality",
-      value = round(100 * mean(score()[score() > 0]) / max(score()), 0),
+      value = round(100 * mean(score()[score() > 0],na.rm = T) / max(score()), 0),
       color = "yellow",
       icon = icon("thumbs-up", lib = "glyphicon")
     )
