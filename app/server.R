@@ -364,7 +364,7 @@ server <- function(input, output) {
   output$r.df = renderDataTable({
     rankedtable <-
       DT::datatable(
-        df4()[ord(), c(
+        df4()[,c(
           "Rank",
           "Hospital.Name",
           "Hospital.overall.rating",
@@ -376,6 +376,7 @@ server <- function(input, output) {
                         "Total Charges"),
         selection = "single",
         options = list(
+          order = list(0,'asc'),
           stateSave = TRUE,
           pageLength = 5,
           lengthMenu = c(5, 10, 15, 20),
