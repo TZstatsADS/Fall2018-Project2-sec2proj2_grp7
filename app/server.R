@@ -455,9 +455,9 @@ server <- function(input, output) {
   output$vbox_3 <- renderValueBox({
     valueBox(
       subtitle = "Average Cost",
-      value = paste(round(
+      value = paste("$",round(
         mean(df4()$Average.Total.Payments, na.rm = TRUE), 0
-      ), "$"),
+      )),
       color = "blue",
       icon = icon("credit-card")
     )
