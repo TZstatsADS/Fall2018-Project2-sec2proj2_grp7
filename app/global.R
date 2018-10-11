@@ -60,13 +60,18 @@ getscore <- function(observation, care.w) {
   in.w <-
     c(20, 20, 20, 20, 8, 8, 4) # order is (M, S, R, P, Effect, T, Effic)
   f.w <- in.w * care.w / sum(in.w * care.w)
-  ordinal <- as.numeric(observation[c(19, 20, 21, 22, 23, 24, 25)])
+  ordinal <- observation[c(19, 20, 21, 22, 23, 24, 25)]
+  ordinal <- replace(ordinal, ordinal == "Not Available", 0)
+  ordinal <- as.numeric(ordinal)
   if (length(ordinal) != 7 | length(care.w) != 7) {
     return(NA)
   }
-  ordinal <- replace(ordinal, ordinal == "Not Available", 0)
   return(sum(ordinal * f.w))
 }
+
+hospital_info <- hospital_info %>%
+  mutate(Hospital.overall.rating=replace(Hospital.overall.rating, Hospital.overall.rating=="Not Available", NA)) %>%
+  mutate(Hospital.overall.rating=as.numeric(Hospital.overall.rating)) %>% as.data.frame()
 
 #popup content generator
 content.fun <- function(selected) {

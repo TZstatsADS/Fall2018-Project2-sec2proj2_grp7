@@ -257,12 +257,18 @@ ui <- dashboardPage(
                       choice = states.2016,
                       selected = "NY"
                     ),
+                    selectInput(
+                      "r.drg",
+                      label = "Select Your Diagnosis Related Group:",
+                      choices = DRG.2016,
+                      selected = "039 - EXTRACRANIAL PROCEDURES W/O CC/MCC"
+                    ),
                     sliderInput(
                       "r.cost",
                       label = "Cost Range:",
                       min = 2500,
-                      max = 60000,
-                      value = c(3000, 40000)
+                      max = 500000,
+                      value = c(2500, 450000)
                     ),
                     selectizeInput(
                       "r.care",
@@ -278,12 +284,6 @@ ui <- dashboardPage(
                         "Efficient Use of Medical Imaging"
                       ),
                       selected = c("Selected")
-                    ),
-                    selectInput(
-                      "r.drg",
-                      label = "Select Your Diagnosis Related Group:",
-                      choices = DRG.2016,
-                      selected = "039 - EXTRACRANIAL PROCEDURES W/O CC/MCC"
                     )
                   ),
                   valueBoxOutput("vbox_1", width = NULL),

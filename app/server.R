@@ -378,7 +378,9 @@ server <- function(input, output) {
         options = list(
           stateSave = TRUE,
           pageLength = 5,
-          lengthMenu = c(5, 10, 15, 20)
+          lengthMenu = c(5, 10, 15, 20),
+          style = 'bootstrap',
+          class = 'table-stripe'
         ),
         rownames = FALSE
       )
@@ -458,8 +460,9 @@ server <- function(input, output) {
   #value box - average quality
   output$vbox_2 <- renderValueBox({
     valueBox(
-      subtitle = "Average Quality",
-      value = round(100 * mean(score()[score() > 0],na.rm = T) / max(score()), 0),
+      subtitle = "Average Overall Rating",
+      value = round(mean(df4()$Hospital.overall.rating,na.rm = T),2),
+      #value = round(100 * mean(score()[score() > 0],na.rm = T) / max(score(),na.rm = T), 0),
       color = "yellow",
       icon = icon("thumbs-up", lib = "glyphicon")
     )
